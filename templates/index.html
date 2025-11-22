@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Web App</title>
+</head>
+<body>
+    <h1>Python Web App Running</h1>
+
+    <textarea id="text" rows="5" cols="40" placeholder="Type something..."></textarea>
+    <br><br>
+
+    <button onclick="send()">Analyze</button>
+
+    <p id="result"></p>
+
+    <script>
+        async function send() {
+            const text = document.getElementById("text").value;
+
+            const response = await fetch("/analyze", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ text: text })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText = 
+                "Response: " + JSON.stringify(data);
+        }
+    </script>
+</body>
+</html>
