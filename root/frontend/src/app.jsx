@@ -57,6 +57,10 @@ function App() {
 
     setLoading(false);
   }
+  
+  function changeTheme(theme) {
+    document.body.className = theme;
+  }
 
   return (
     <div className="wrapper">
@@ -82,6 +86,17 @@ function App() {
           </a>
         </div>
       )}
+
+      <div className="theme-switcher">
+        <select onChange={(e) => changeTheme(e.target.value)}>
+          <option value="">Default</option>
+          <option value="theme-purple">Neon Tech Purple</option>
+          <option value="theme-cyberblue">Cyber Blue</option>
+          <option value="theme-lavared">Lava Red</option>
+          <option value="theme-emeraldmatrix">Emerald Matrix Green</option>
+          <option value="theme-stealthblack">Stealth Black</option>
+        </select>
+      </div>
     </div>
   );
 }
