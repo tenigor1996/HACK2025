@@ -705,3 +705,13 @@ button:disabled {
     flex-direction: column;
   }
 }
+
+/* Full-screen starfield canvas behind everything */
+.starfield-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}

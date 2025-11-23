@@ -3,6 +3,7 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
 import useIntersectionObserver from "./hooks/useIntersectionObserver";
+import Starfield from "./Starfield.jsx";
 import {
   LineChart,
   Line,
@@ -434,6 +435,8 @@ function App() {
   // Landing screen
   if (!userType) {
     return (
+      <>
+      <Starfield />
       <div className="landing">
         <div className="landing-inner">
           <h1 className="landing-title">EasySearch</h1>
@@ -472,12 +475,15 @@ function App() {
           </div>
         </div>
       </div>
+      </>
     );
   }
 
   // Elder UI
   if (userType === "elder") {
     return (
+      <>
+      <Starfield />
       <div className="wrapper elder-wrapper">
         <div className="top-bar">
           <button
@@ -603,380 +609,385 @@ function App() {
           </label>
         </div>
       </div>
+      </>
     );
   }
 
-  // Teen dashboard UI
+    // Teen dashboard UI
   return (
-    <div className="teen-wrapper">
-      <div className="top-bar">
-        <button
-          className="link-button"
-          onClick={() => {
-            setUserType(null);
-          }}
-        >
-          ← Change profile
-        </button>
-      </div>
+    <>
+      <Starfield />
 
-      <header className="dashboard-header">
-        <div>
-          <h1>FocusBoard</h1>
-          <p className="dashboard-tagline">
-            A smarter way to explore the web while keeping an eye on your
-            attention.
-          </p>
+      <div className="teen-wrapper">
+        <div className="top-bar">
+          <button
+            className="link-button"
+            onClick={() => {
+              setUserType(null);
+            }}
+          >
+            ← Change profile
+          </button>
         </div>
-        <div className="status-pill">
-          <span
-            className={
-              backendStatus === "online"
-                ? "status-dot status-dot--online"
-                : "status-dot status-dot--offline"
-            }
-          />
-          <span className="status-text">
-            Backend{" "}
-            {backendStatus === "checking"
-              ? "checking..."
-              : backendStatus === "online"
-              ? "online"
-              : "offline"}
-          </span>
-        </div>
-      </header>
 
-      <div className="dashboard-grid">
-        {/* Ask anything */}
-        <section className="dashboard-card dashboard-card--wide">
-          <h2>Ask anything</h2>
-          <p className="section-subtitle">
-            We’ll search trusted sites, extract key info, and summarize it for
-            you.
-          </p>
-
-          <div className="search-row">
-            <input
-              placeholder="E.g. best ways to stay focused while studying physics"
-              value={teenQuery}
-              onChange={(e) => setTeenQuery(e.target.value)}
+        <header className="dashboard-header">
+          <div>
+            <h1>FocusBoard</h1>
+            <p className="dashboard-tagline">
+              A smarter way to explore the web while keeping an eye on your
+              attention.
+            </p>
+          </div>
+          <div className="status-pill">
+            <span
+              className={
+                backendStatus === "online"
+                  ? "status-dot status-dot--online"
+                  : "status-dot status-dot--offline"
+              }
             />
-            <button
-              onClick={() =>
-                handleTeenSearch(undefined, {
-                  type: "manual",
-                  category: "Custom",
-                })
-              }
-              disabled={teenLoading}
-            >
-              {teenLoading ? "Searching..." : "Search"}
-            </button>
+            <span className="status-text">
+              Backend{" "}
+              {backendStatus === "checking"
+                ? "checking..."
+                : backendStatus === "online"
+                ? "online"
+                : "offline"}
+            </span>
           </div>
+        </header>
 
-          <div className="quick-topics">
-            <span className="quick-label">Try a quick topic:</span>
-            <button
-              className="pill-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "how to build a consistent study routine",
-                  { type: "quickTopic", category: "Study routine" }
-                )
-              }
-            >
-              Study Routine
-            </button>
-            <button
-              className="pill-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "tips for managing stress and anxiety for college students",
-                  { type: "quickTopic", category: "Mental health" }
-                )
-              }
-            >
-              Mental Health
-            </button>
-            <button
-              className="pill-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "scholarships for computer science students in the US",
-                  { type: "quickTopic", category: "Scholarships" }
-                )
-              }
-            >
-              Scholarships
-            </button>
-            <button
-              className="pill-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "how to manage time between school, work, and side projects",
-                  { type: "quickTopic", category: "Time management" }
-                )
-              }
-            >
-              Time Management
-            </button>
-          </div>
-        </section>
+        <div className="dashboard-grid">
+          {/* Ask anything */}
+          <section className="dashboard-card dashboard-card--wide">
+            <h2>Ask anything</h2>
+            <p className="section-subtitle">
+              We’ll search trusted sites, extract key info, and summarize it for
+              you.
+            </p>
 
-        {/* Focus tracker + charts */}
-        <section className="dashboard-card">
-          <h2>Focus tracker</h2>
-          <p className="section-subtitle">
-            These numbers update based on what you do in this session.
-          </p>
+            <div className="search-row">
+              <input
+                placeholder="E.g. best ways to stay focused while studying physics"
+                value={teenQuery}
+                onChange={(e) => setTeenQuery(e.target.value)}
+              />
+              <button
+                onClick={() =>
+                  handleTeenSearch(undefined, {
+                    type: "manual",
+                    category: "Custom",
+                  })
+                }
+                disabled={teenLoading}
+              >
+                {teenLoading ? "Searching..." : "Search"}
+              </button>
+            </div>
 
-          <div className="metrics-row">
-            <div className="metric">
-              <span className="metric-label">Focus score</span>
-              <span className="metric-value">{focusScore}%</span>
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  style={{ width: `${focusScore}%` }}
-                />
+            <div className="quick-topics">
+              <span className="quick-label">Try a quick topic:</span>
+              <button
+                className="pill-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "how to build a consistent study routine",
+                    { type: "quickTopic", category: "Study routine" }
+                  )
+                }
+              >
+                Study Routine
+              </button>
+              <button
+                className="pill-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "tips for managing stress and anxiety for college students",
+                    { type: "quickTopic", category: "Mental health" }
+                  )
+                }
+              >
+                Mental Health
+              </button>
+              <button
+                className="pill-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "scholarships for computer science students in the US",
+                    { type: "quickTopic", category: "Scholarships" }
+                  )
+                }
+              >
+                Scholarships
+              </button>
+              <button
+                className="pill-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "how to manage time between school, work, and side projects",
+                    { type: "quickTopic", category: "Time management" }
+                  )
+                }
+              >
+                Time Management
+              </button>
+            </div>
+          </section>
+
+          {/* Focus tracker + charts */}
+          <section className="dashboard-card">
+            <h2>Focus tracker</h2>
+            <p className="section-subtitle">
+              These numbers update based on what you do in this session.
+            </p>
+
+            <div className="metrics-row">
+              <div className="metric">
+                <span className="metric-label">Focus score</span>
+                <span className="metric-value">{focusScore}%</span>
+                <div className="progress">
+                  <div
+                    className="progress-bar"
+                    style={{ width: `${focusScore}%` }}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="metric">
-              <span className="metric-label">Session time</span>
-              <span className="metric-value">
-                {formatDuration(sessionSeconds)}
-              </span>
-            </div>
-
-            <div className="metric">
-              <span className="metric-label">Active vs idle</span>
-              <div className="stacked-bar">
-                <div
-                  className="stacked-bar-active"
-                  style={{ width: `${activePct}%` }}
-                />
-                <div
-                  className="stacked-bar-idle"
-                  style={{ width: `${100 - activePct}%` }}
-                />
-              </div>
-              <span className="metric-caption">
-                Active {formatDuration(timeStats.activeSeconds)} · Idle{" "}
-                {formatDuration(timeStats.idleSeconds)}
-              </span>
-            </div>
-
-            <div className="metric-group">
-              <div className="small-metric">
-                <span className="metric-label">Searches (typed)</span>
+              <div className="metric">
+                <span className="metric-label">Session time</span>
                 <span className="metric-value">
-                  {searchTypeCounts.manual}
+                  {formatDuration(sessionSeconds)}
                 </span>
               </div>
-              <div className="small-metric">
-                <span className="metric-label">Quick topics</span>
-                <span className="metric-value">
-                  {searchTypeCounts.quickTopic}
+
+              <div className="metric">
+                <span className="metric-label">Active vs idle</span>
+                <div className="stacked-bar">
+                  <div
+                    className="stacked-bar-active"
+                    style={{ width: `${activePct}%` }}
+                  />
+                  <div
+                    className="stacked-bar-idle"
+                    style={{ width: `${100 - activePct}%` }}
+                  />
+                </div>
+                <span className="metric-caption">
+                  Active {formatDuration(timeStats.activeSeconds)} · Idle{" "}
+                  {formatDuration(timeStats.idleSeconds)}
                 </span>
               </div>
-              <div className="small-metric">
-                <span className="metric-label">Quick actions</span>
-                <span className="metric-value">
-                  {searchTypeCounts.quickAction}
+
+              <div className="metric-group">
+                <div className="small-metric">
+                  <span className="metric-label">Searches (typed)</span>
+                  <span className="metric-value">
+                    {searchTypeCounts.manual}
+                  </span>
+                </div>
+                <div className="small-metric">
+                  <span className="metric-label">Quick topics</span>
+                  <span className="metric-value">
+                    {searchTypeCounts.quickTopic}
+                  </span>
+                </div>
+                <div className="small-metric">
+                  <span className="metric-label">Quick actions</span>
+                  <span className="metric-value">
+                    {searchTypeCounts.quickAction}
+                  </span>
+                </div>
+              </div>
+
+              <div className="metric">
+                <span className="metric-label">
+                  Avg reading time per result
+                </span>
+                <span className="metric-value metric-value--small">
+                  {teenSearchCount > 0
+                    ? `${Math.round(
+                        readingSeconds / Math.max(teenSearchCount, 1)
+                      )} sec`
+                    : "—"}
                 </span>
               </div>
             </div>
 
-            <div className="metric">
-              <span className="metric-label">
-                Avg reading time per result
-              </span>
-              <span className="metric-value metric-value--small">
-                {teenSearchCount > 0
-                  ? `${Math.round(
-                      readingSeconds / Math.max(teenSearchCount, 1)
-                    )} sec`
-                  : "—"}
-              </span>
-            </div>
-          </div>
+            <div className="chart-row">
+              <div className="chart-container">
+                <h3 className="chart-title">Focus over time</h3>
+                {focusHistory.length === 0 ? (
+                  <p className="chart-placeholder">
+                    Start searching to see your focus trend.
+                  </p>
+                ) : (
+                  <ResponsiveContainer width="100%" height={160}>
+                    <LineChart data={focusHistory}>
+                      <XAxis dataKey="t" tick={{ fontSize: 10 }} />
+                      <YAxis domain={[0, 100]} hide />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#020617",
+                          border: "1px solid #1f2937",
+                          fontSize: "0.8rem",
+                          color: "#e5e7eb",
+                        }}
+                        labelFormatter={(v) => `Minute ${v}`}
+                        labelStyle={{ color: "#e5e7eb" }}
+                        itemStyle={{ color: "#e5e7eb" }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="score"
+                        stroke="#22c55e"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
 
-          <div className="chart-row">
-            <div className="chart-container">
-              <h3 className="chart-title">Focus over time</h3>
-              {focusHistory.length === 0 ? (
-                <p className="chart-placeholder">
-                  Start searching to see your focus trend.
-                </p>
-              ) : (
-                <ResponsiveContainer width="100%" height={160}>
-                  <LineChart data={focusHistory}>
-                    <XAxis dataKey="t" tick={{ fontSize: 10 }} />
-                    <YAxis domain={[0, 100]} hide />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#020617",
-                        border: "1px solid #1f2937",
-                        fontSize: "0.8rem",
-                        color: "#e5e7eb",
-                      }}
-                      labelFormatter={(v) => `Minute ${v}`}
-                      labelStyle={{ color: "#e5e7eb" }}
-                      itemStyle={{ color: "#e5e7eb" }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="score"
-                      stroke="#22c55e"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+              <div className="chart-container">
+                <h3 className="chart-title">Topics this session</h3>
+                {categoryData.length === 0 ? (
+                  <p className="chart-placeholder">
+                    Use quick topics or actions to see a breakdown.
+                  </p>
+                ) : (
+                  <ResponsiveContainer width="100%" height={160}>
+                    <PieChart>
+                      <Pie
+                        data={categoryData}
+                        dataKey="value"
+                        nameKey="name"
+                        outerRadius={70}
+                      >
+                        {categoryData.map((entry, idx) => (
+                          <Cell
+                            key={entry.name}
+                            fill={
+                              CATEGORY_COLORS[
+                                idx % CATEGORY_COLORS.length
+                              ]
+                            }
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#020617",
+                          border: "1px solid #1f2937",
+                          fontSize: "0.8rem",
+                          color: "#e5e7eb",
+                        }}
+                        labelStyle={{ color: "#e5e7eb" }}
+                        itemStyle={{ color: "#e5e7eb" }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            </div>
+
+            <ul className="insights-list">
+              <li>
+                Your computed focus score this session is{" "}
+                <strong>{focusScore}</strong> / 100.
+              </li>
+              {bestPoint && (
+                <li>
+                  You were most focused around minute{" "}
+                  <strong>{bestPoint.t}</strong> of this session.
+                </li>
               )}
-            </div>
-
-            <div className="chart-container">
-              <h3 className="chart-title">Topics this session</h3>
-              {categoryData.length === 0 ? (
-                <p className="chart-placeholder">
-                  Use quick topics or actions to see a breakdown.
-                </p>
-              ) : (
-                <ResponsiveContainer width="100%" height={160}>
-                  <PieChart>
-                    <Pie
-                      data={categoryData}
-                      dataKey="value"
-                      nameKey="name"
-                      outerRadius={70}
-                    >
-                      {categoryData.map((entry, idx) => (
-                        <Cell
-                          key={entry.name}
-                          fill={
-                            CATEGORY_COLORS[
-                              idx % CATEGORY_COLORS.length
-                            ]
-                          }
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#020617",
-                        border: "1px solid #1f2937",
-                        fontSize: "0.8rem",
-                        color: "#e5e7eb",
-                      }}
-                      labelStyle={{ color: "#e5e7eb" }}
-                      itemStyle={{ color: "#e5e7eb" }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
+              {topCategory && (
+                <li>
+                  Most of your searches were about{" "}
+                  <strong>{topCategory}</strong>.
+                </li>
               )}
+              {sessionSeconds > 0 && (
+                <li>
+                  You were actively interacting with the page for{" "}
+                  <strong>{activeShare}%</strong> of this session.
+                </li>
+              )}
+            </ul>
+          </section>
+
+          {/* Quick actions */}
+          <section className="dashboard-card">
+            <h2>Quick actions</h2>
+            <p className="section-subtitle">
+              Use these shortcuts when you don’t know what to ask.
+            </p>
+
+            <div className="quick-actions">
+              <button
+                className="quick-action-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "what are some simple project ideas to learn javascript",
+                    { type: "quickAction", category: "Side projects" }
+                  )
+                }
+              >
+                ⚡ Find CS side-project ideas
+              </button>
+              <button
+                className="quick-action-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "how much sleep does a 17 year old need for good health",
+                    { type: "quickAction", category: "Sleep" }
+                  )
+                }
+              >
+                😴 Check your sleep basics
+              </button>
+              <button
+                className="quick-action-button"
+                onClick={() =>
+                  handleTeenSearch(
+                    "tips for staying off social media during homework",
+                    { type: "quickAction", category: "Distractions" }
+                  )
+                }
+              >
+                📵 Reduce distractions plan
+              </button>
             </div>
-          </div>
 
-          <ul className="insights-list">
-            <li>
-              Your computed focus score this session is{" "}
-              <strong>{focusScore}</strong> / 100.
-            </li>
-            {bestPoint && (
-              <li>
-                You were most focused around minute{" "}
-                <strong>{bestPoint.t}</strong> of this session.
-              </li>
-            )}
-            {topCategory && (
-              <li>
-                Most of your searches were about{" "}
-                <strong>{topCategory}</strong>.
-              </li>
-            )}
-            {sessionSeconds > 0 && (
-              <li>
-                You were actively interacting with the page for{" "}
-                <strong>{activeShare}%</strong> of this session.
-              </li>
-            )}
-          </ul>
-        </section>
-
-        {/* Quick actions */}
-        <section className="dashboard-card">
-          <h2>Quick actions</h2>
-          <p className="section-subtitle">
-            Use these shortcuts when you don’t know what to ask.
-          </p>
-
-          <div className="quick-actions">
-            <button
-              className="quick-action-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "what are some simple project ideas to learn javascript",
-                  { type: "quickAction", category: "Side projects" }
-                )
-              }
-            >
-              ⚡ Find CS side-project ideas
-            </button>
-            <button
-              className="quick-action-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "how much sleep does a 17 year old need for good health",
-                  { type: "quickAction", category: "Sleep" }
-                )
-              }
-            >
-              😴 Check your sleep basics
-            </button>
-            <button
-              className="quick-action-button"
-              onClick={() =>
-                handleTeenSearch(
-                  "tips for staying off social media during homework",
-                  { type: "quickAction", category: "Distractions" }
-                )
-              }
-            >
-              📵 Reduce distractions plan
-            </button>
-          </div>
-
-          <div className="theme-switcher theme-switcher--right">
-            <label>
-              Theme:&nbsp;
-              <select onChange={(e) => changeTheme(e.target.value)}>
-                <option value="">Default</option>
-                <option value="theme-purple">Neon Tech Purple</option>
-                <option value="theme-cyberblue">Cyber Blue</option>
-                <option value="theme-lavared">Lava Red</option>
-                <option value="theme-emeraldmatrix">
-                  Emerald Matrix Green
-                </option>
-                <option value="theme-stealthblack">Stealth Black</option>
-              </select>
-            </label>
-          </div>
-        </section>
-      </div>
-
-      {teenResult && (
-        <div className="card dashboard-result">
-          <h2>{teenResult.title}</h2>
-          <p>{teenResult.summary}</p>
-          <a href={teenResult.url} target="_blank" rel="noopener noreferrer">
-            Open full article
-          </a>
+            <div className="theme-switcher theme-switcher--right">
+              <label>
+                Theme:&nbsp;
+                <select onChange={(e) => changeTheme(e.target.value)}>
+                  <option value="">Default</option>
+                  <option value="theme-purple">Neon Tech Purple</option>
+                  <option value="theme-cyberblue">Cyber Blue</option>
+                  <option value="theme-lavared">Lava Red</option>
+                  <option value="theme-emeraldmatrix">
+                    Emerald Matrix Green
+                  </option>
+                  <option value="theme-stealthblack">Stealth Black</option>
+                </select>
+              </label>
+            </div>
+          </section>
         </div>
-      )}
-    </div>
+
+        {teenResult && (
+          <div className="card dashboard-result">
+            <h2>{teenResult.title}</h2>
+            <p>{teenResult.summary}</p>
+            <a href={teenResult.url} target="_blank" rel="noopener noreferrer">
+              Open full article
+            </a>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
