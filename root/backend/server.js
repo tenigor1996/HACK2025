@@ -1,7 +1,11 @@
+require('dotenv').config({ path: __dirname + '/.env' });
+console.log("Loaded KEY?", process.env.API_KEY);
+
 const express = require('express');
 const cors = require('cors');
 const { searchTrustedSites } = require('./services/search');
 const { fetchMainContent } = require('./services/fetchPage');
+const { summarizeText } = require('./services/gemini');
 
 const app = express();
 
@@ -45,6 +49,24 @@ app.post('/api/fetch-and-extract', async (req, res) => {
     res.status(500).json({ error: `Fetch and extract failed: ${err.message}` });
   }
 });
+
+app.post('/api/summarize', async (req, res) => {
+  try {
+    const { text } = req.body;
+
+    if (!text) {
+      return res.status(400).json({ error: 'Missing text' });
+    }
+
+    const summary = await summarizeText(text);
+    res.json({ summary });
+
+  } catch (err) {
+    console.error("Summarization error:", err.message);
+    res.status(500).json({ error: 'Summarization failed' });
+  }
+});
+
 
 const port = 5050;
 app.listen(port, () => {
