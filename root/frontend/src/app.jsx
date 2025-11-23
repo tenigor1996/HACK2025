@@ -1,10 +1,23 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useIntersectionObserver from "./hooks/useIntersectionObserver";
 
 function App() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+
+  const observer = useIntersectionObserver({ threshold: 0.1 });
+
+  const animatedElements = useRef([]);
+
+  useEffect(() => {
+    animatedElements.current.forEach(el => {
+      if (el && observer.current) {
+        observer.current.observe(el);
+      }
+    });
+  }, [observer]);
 
   async function handleSearch() {
     setLoading(true);
@@ -57,28 +70,35 @@ function App() {
 
     setLoading(false);
   }
-  
+
   function changeTheme(theme) {
     document.body.className = theme;
   }
 
   return (
     <div className="wrapper">
-      <h1>EasySearch</h1>
-      <p className="tagline">Web simplified for older adults ❤️</p>
+      <h1 ref={el => animatedElements.current[0] = el} className="scroll-animate fade-up">EasySearch</h1>
+      <p ref={el => animatedElements.current[1] = el} className="tagline scroll-animate fade-up">Web simplified for older adults ❤️</p>
 
       <input
+        ref={el => animatedElements.current[2] = el}
+        className="scroll-animate fade-left"
         placeholder="Enter a question..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <button onClick={handleSearch} disabled={loading}>
+      <button
+        ref={el => animatedElements.current[3] = el}
+        className="scroll-animate fade-right"
+        onClick={handleSearch}
+        disabled={loading}
+      >
         {loading ? "Searching..." : "Search"}
       </button>
 
       {result && (
-        <div className="card">
+        <div ref={el => animatedElements.current[4] = el} className="card scroll-animate blur-in">
           <h2>{result.title}</h2>
           <p>{result.summary}</p>
           <a href={result.url} target="_blank" rel="noopener noreferrer">
@@ -97,6 +117,7 @@ function App() {
           <option value="theme-stealthblack">Stealth Black</option>
         </select>
       </div>
+
     </div>
   );
 }

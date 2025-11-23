@@ -171,18 +171,3 @@ button:disabled {
   text-decoration: underline;
   color: #82baff;
 }
-
-.theme-switcher {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-}
-
-.theme-switcher select {
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid var(--background-secondary);
-  background-color: var(--background-secondary);
-  color: var(--text-primary);
-  font-size: 1rem;
-}
