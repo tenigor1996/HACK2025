@@ -113,14 +113,140 @@ body {
   color: var(--link-primary);
 }
 
-/* Elder wrapper */
+/* Shared wrapper */
 .wrapper {
   max-width: 600px;
   margin: auto;
-  text-align: center;
   padding: var(--spacing-lg);
 }
 
+/* Elder layout */
+.elder-wrapper {
+  max-width: 760px;
+}
+
+.elder-main-card {
+  text-align: center;
+  background: radial-gradient(circle at top, #1f2937 0, var(--background-secondary) 55%);
+}
+
+.elder-title {
+  font-size: 2.6rem;
+  margin: 0 0 var(--spacing-xs);
+}
+
+.elder-subtitle {
+  color: var(--text-secondary);
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.05rem;
+}
+
+.elder-input-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.elder-input-row input {
+  flex: 1;
+  max-width: none;
+  margin-bottom: 0;
+}
+
+.elder-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.elder-suggestions-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.elder-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-top: var(--spacing-sm);
+}
+
+.elder-meta-item {
+  min-width: 180px;
+}
+
+.meta-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+}
+
+/* Elder result & history */
+.elder-result-card {
+  margin-top: var(--spacing-lg);
+}
+
+.elder-history-card {
+  margin-top: var(--spacing-md);
+}
+
+.elder-section-title {
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.05rem;
+}
+
+.elder-history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.elder-history-item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: 0.4rem 0;
+  border-top: 1px solid #27272f;
+  font-size: 0.95rem;
+}
+
+.elder-history-item:first-child {
+  border-top: none;
+}
+
+.elder-history-question {
+  flex: 1;
+  color: var(--text-secondary);
+}
+
+/* Elder daily story */
+.elder-daily-card {
+  margin-top: var(--spacing-lg);
+}
+
+.elder-daily-title {
+  margin-top: 0;
+  margin-bottom: var(--spacing-xs);
+  font-size: 1rem;
+}
+
+.elder-muted {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Headings used elsewhere */
 h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -133,6 +259,7 @@ h1 {
   font-size: 1.125rem;
 }
 
+/* Inputs & buttons */
 input {
   width: 100%;
   max-width: 480px;
@@ -572,5 +699,9 @@ button:disabled {
 
   .status-pill {
     margin-top: var(--spacing-sm);
+  }
+
+  .elder-input-row {
+    flex-direction: column;
   }
 }
