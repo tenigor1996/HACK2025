@@ -3,7 +3,7 @@ const { JSDOM } = require('jsdom');
 
 /**
  * Download a page and extract the main readable content in a robust, simple way.
- * No Readability – just DOM cleaning and paragraph extraction.
+ * No Readability – just DOM cleaning and paragraph / bullet extraction.
  * @param {string} url
  * @returns {Promise<{ title: string, contentText: string, contentHtml: string }>}
  */
@@ -43,13 +43,25 @@ async function fetchMainContent(url) {
     doc.querySelector('#content') ||
     doc.body;
 
-  // Collect paragraphs
-  const paragraphs = Array.from(main.querySelectorAll('p'))
+  // Collect paragraphs first
+  let blocks = Array.from(main.querySelectorAll('p'))
     .map(p => p.textContent.trim())
     .filter(Boolean);
 
-  if (paragraphs.length === 0) {
-    throw new Error('No readable paragraphs found');
+  // Fallback: some pages (like "on this day" lists) mainly use <li>
+  if (blocks.length === 0) {
+    blocks = Array.from(main.querySelectorAll('li'))
+      .map(li => li.textContent.trim())
+      .filter(Boolean);
+
+    // Don’t spam with 100 bullets – keep it sane
+    if (blocks.length > 40) {
+      blocks = blocks.slice(0, 40);
+    }
+  }
+
+  if (blocks.length === 0) {
+    throw new Error('No readable content found');
   }
 
   const titleEl = doc.querySelector('h1');
@@ -58,8 +70,8 @@ async function fetchMainContent(url) {
     doc.title ||
     url;
 
-  const contentText = paragraphs.join('\n\n');
-  const contentHtml = paragraphs
+  const contentText = blocks.join('\n\n');
+  const contentHtml = blocks
     .map(p => `<p>${p}</p>`)
     .join('\n');
 

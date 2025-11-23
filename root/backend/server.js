@@ -1,3 +1,4 @@
+
 // require('dotenv').config({ path: __dirname + '/.env' });
 // console.log("Loaded KEY?", process.env.API_KEY);
 
@@ -27,6 +28,7 @@
 //     const result = await searchTrustedSites(query);
 //     res.json(result);
 //   } catch (error) {
+//     console.error('Search error:', error);
 //     res.status(500).json({ error: 'Search failed' });
 //   }
 // });
@@ -42,11 +44,10 @@
 //     const result = await fetchMainContent(url);
 //     res.json(result);
 //   } catch (err) {
-//     // Log the full underlying error to the console for debugging.
 //     console.error('fetch-and-extract error:', err);
-
-//     // Return HTTP 500 with a helpful error message.
-//     res.status(500).json({ error: `Fetch and extract failed: ${err.message}` });
+//     res
+//       .status(500)
+//       .json({ error: `Fetch and extract failed: ${err.message}` });
 //   }
 // });
 
@@ -60,13 +61,33 @@
 
 //     const summary = await summarizeText(text);
 //     res.json({ summary });
-
 //   } catch (err) {
-//     console.error("Summarization error:", err.message);
+//     console.error('Summarization error:', err.message);
 //     res.status(500).json({ error: 'Summarization failed' });
 //   }
 // });
 
+// /**
+//  * Daily history / gentle story for elders.
+//  * Uses a public "This Day in History" page and summarizes it with Gemini.
+//  */
+// app.get('/api/daily-history', async (req, res) => {
+//   try {
+//     const url = 'https://www.history.com/this-day-in-history';
+
+//     const main = await fetchMainContent(url);
+//     const summary = await summarizeText(main.contentText);
+
+//     res.json({
+//       title: main.title,
+//       summary,
+//       url,
+//     });
+//   } catch (err) {
+//     console.error('daily-history error:', err);
+//     res.status(500).json({ error: 'Failed to load daily history.' });
+//   }
+// });
 
 // const port = 5050;
 // app.listen(port, () => {
@@ -74,6 +95,7 @@
 // });
 
 // module.exports = app;
+
 
 require('dotenv').config({ path: __dirname + '/.env' });
 console.log("Loaded KEY?", process.env.API_KEY);
@@ -145,17 +167,18 @@ app.post('/api/summarize', async (req, res) => {
 
 /**
  * Daily history / gentle story for elders.
- * Uses a public "This Day in History" page and summarizes it with Gemini.
+ * Uses OnThisDay and summarizes it with Gemini to keep it short and friendly.
  */
 app.get('/api/daily-history', async (req, res) => {
   try {
-    const url = 'https://www.history.com/this-day-in-history';
+    // Simple "today in history" page
+    const url = 'https://www.onthisday.com/today/events.php';
 
     const main = await fetchMainContent(url);
     const summary = await summarizeText(main.contentText);
 
     res.json({
-      title: main.title,
+      title: main.title || 'Today in history',
       summary,
       url,
     });
